@@ -3,11 +3,11 @@
 namespace PpmParser;
 
 use InvalidArgumentException;
-use PhpParser\Node\Expr\Include_;
-use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\GroupUse;
-use PhpParser\Node\Stmt\Use_;
-use PhpParser\Node\Stmt\UseUse;
+use PpmParser\Node\Expr\Include_;
+use PpmParser\Node\Stmt\Class_;
+use PpmParser\Node\Stmt\GroupUse;
+use PpmParser\Node\Stmt\Use_;
+use PpmParser\Node\Stmt\UseUse;
 use RuntimeException;
 
 class NodeDumper
