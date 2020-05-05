@@ -8,6 +8,10 @@
     use PpmParser\Node;
     use PpmParser\Node\Stmt;
 
+    /**
+     * Class TraitUseAdaptation
+     * @package PpmParser\Builder
+     */
     class TraitUseAdaptation implements Builder
     {
         const TYPE_UNDEFINED  = 0;
