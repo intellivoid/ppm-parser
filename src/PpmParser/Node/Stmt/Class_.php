@@ -4,6 +4,7 @@ namespace PpmParser\Node\Stmt;
 
 use PpmParser\Error;
 use PpmParser\Node;
+use function is_string;
 
 class Class_ extends ClassLike
 {
@@ -37,7 +38,7 @@ class Class_ extends ClassLike
     public function __construct($name, array $subNodes = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->flags = $subNodes['flags'] ?? $subNodes['type'] ?? 0;
-        $this->name = \is_string($name) ? new Node\Identifier($name) : $name;
+        $this->name = is_string($name) ? new Node\Identifier($name) : $name;
         $this->extends = $subNodes['extends'] ?? null;
         $this->implements = $subNodes['implements'] ?? [];
         $this->stmts = $subNodes['stmts'] ?? [];

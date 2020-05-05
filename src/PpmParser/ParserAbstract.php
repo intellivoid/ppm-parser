@@ -6,6 +6,9 @@ namespace PpmParser;
  * This parser is based on a skeleton written by Moriyoshi Koizumi, which in
  * turn is based on work by Masato Bito.
  */
+
+use Exception;
+use LogicException;
 use PpmParser\Node\Expr;
 use PpmParser\Node\Expr\Cast\Double;
 use PpmParser\Node\Name;
@@ -22,6 +25,11 @@ use PpmParser\Node\Stmt\Property;
 use PpmParser\Node\Stmt\TryCatch;
 use PpmParser\Node\Stmt\UseUse;
 use PpmParser\Node\VarLikeIdentifier;
+use RangeException;
+use RuntimeException;
+use function count;
+use function is_string;
+use function strlen;
 
 abstract class ParserAbstract implements Parser
 {
@@ -131,7 +139,7 @@ abstract class ParserAbstract implements Parser
         $this->lexer = $lexer;
 
         if (isset($options['throwOnError'])) {
-            throw new \LogicException(
+            throw new LogicException(
                 '"throwOnError" is no longer supported, use "errorHandler" instead');
         }
 
@@ -213,7 +221,7 @@ abstract class ParserAbstract implements Parser
                         : $this->invalidSymbol;
 
                     if ($symbol === $this->invalidSymbol) {
-                        throw new \RangeException(sprintf(
+                        throw new RangeException(sprintf(
                             'The lexer returned an invalid token (id=%d, value=%s)',
                             $tokenId, $tokenValue
                         ));
@@ -365,7 +373,7 @@ abstract class ParserAbstract implements Parser
             }
         }
 
-        throw new \RuntimeException('Reached end of parser loop');
+        throw new RuntimeException('Reached end of parser loop');
     }
 
     protected function emitError(Error $error) {
@@ -634,7 +642,7 @@ abstract class ParserAbstract implements Parser
             $tmp->var = new Expr\Variable($name, $staticProp->name->getAttributes());
             return new Expr\StaticCall($staticProp->class, $prop, $args, $attributes);
         } else {
-            throw new \Exception;
+            throw new Exception;
         }
     }
 
@@ -792,10 +800,10 @@ abstract class ParserAbstract implements Parser
             $indentation = '';
         }
 
-        $indentLen = \strlen($indentation);
+        $indentLen = strlen($indentation);
         $indentChar = $indentHasSpaces ? " " : "\t";
 
-        if (\is_string($contents)) {
+        if (is_string($contents)) {
             if ($contents === '') {
                 return new String_('', $attributes);
             }
@@ -822,7 +830,7 @@ abstract class ParserAbstract implements Parser
             $newContents = [];
             foreach ($contents as $i => $part) {
                 if ($part instanceof Node\Scalar\EncapsedStringPart) {
-                    $isLast = $i === \count($contents) - 1;
+                    $isLast = $i === count($contents) - 1;
                     $part->value = $this->stripIndentation(
                         $part->value, $indentLen, $indentChar,
                         $i === 0, $isLast, $part->getAttributes()

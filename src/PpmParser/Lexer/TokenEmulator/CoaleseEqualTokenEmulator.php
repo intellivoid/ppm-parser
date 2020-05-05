@@ -3,13 +3,15 @@
 namespace PpmParser\Lexer\TokenEmulator;
 
 use PpmParser\Lexer\Emulative;
+use function is_array;
+use const PHP_VERSION;
 
 final class CoaleseEqualTokenEmulator implements TokenEmulatorInterface
 {
     public function isEmulationNeeded(string $code) : bool
     {
         // skip version where this is supported
-        if (version_compare(\PHP_VERSION, Emulative::PHP_7_4, '>=')) {
+        if (version_compare(PHP_VERSION, Emulative::PHP_7_4, '>=')) {
             return false;
         }
 
@@ -31,7 +33,7 @@ final class CoaleseEqualTokenEmulator implements TokenEmulatorInterface
                     continue;
                 }
             }
-            if (\is_array($tokens[$i])) {
+            if (is_array($tokens[$i])) {
                 $line += substr_count($tokens[$i][1], "\n");
             }
         }

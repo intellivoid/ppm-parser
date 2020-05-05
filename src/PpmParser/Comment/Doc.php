@@ -2,6 +2,8 @@
 
 namespace PpmParser\Comment;
 
-class Doc extends \PpmParser\Comment
+use PpmParser\Comment;
+
+class Doc extends Comment
 {
 }

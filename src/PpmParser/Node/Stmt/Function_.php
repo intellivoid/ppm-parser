@@ -4,6 +4,7 @@ namespace PpmParser\Node\Stmt;
 
 use PpmParser\Node;
 use PpmParser\Node\FunctionLike;
+use function is_string;
 
 /**
  * @property Node\Name $namespacedName Namespaced name (if using NameResolver)
@@ -35,10 +36,10 @@ class Function_ extends Node\Stmt implements FunctionLike
     public function __construct($name, array $subNodes = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->byRef = $subNodes['byRef'] ?? false;
-        $this->name = \is_string($name) ? new Node\Identifier($name) : $name;
+        $this->name = is_string($name) ? new Node\Identifier($name) : $name;
         $this->params = $subNodes['params'] ?? [];
         $returnType = $subNodes['returnType'] ?? null;
-        $this->returnType = \is_string($returnType) ? new Node\Identifier($returnType) : $returnType;
+        $this->returnType = is_string($returnType) ? new Node\Identifier($returnType) : $returnType;
         $this->stmts = $subNodes['stmts'] ?? [];
     }
 

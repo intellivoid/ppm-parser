@@ -5,6 +5,7 @@ namespace PpmParser\Node\Expr;
 use PpmParser\Node;
 use PpmParser\Node\Expr;
 use PpmParser\Node\FunctionLike;
+use function is_string;
 
 class ArrowFunction extends Expr implements FunctionLike
 {
@@ -38,7 +39,7 @@ class ArrowFunction extends Expr implements FunctionLike
         $this->byRef = $subNodes['byRef'] ?? false;
         $this->params = $subNodes['params'] ?? [];
         $returnType = $subNodes['returnType'] ?? null;
-        $this->returnType = \is_string($returnType) ? new Node\Identifier($returnType) : $returnType;
+        $this->returnType = is_string($returnType) ? new Node\Identifier($returnType) : $returnType;
         $this->expr = $subNodes['expr'] ?? null;
     }
 

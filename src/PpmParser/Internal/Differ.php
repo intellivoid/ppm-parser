@@ -2,6 +2,9 @@
 
 namespace PpmParser\Internal;
 
+use Exception;
+use function count;
+
 /**
  * Implements the Myers diff algorithm.
  *
@@ -52,8 +55,8 @@ class Differ
     }
 
     private function calculateTrace(array $a, array $b) {
-        $n = \count($a);
-        $m = \count($b);
+        $n = count($a);
+        $m = count($b);
         $max = $n + $m;
         $v = [1 => 0];
         $trace = [];
@@ -78,12 +81,12 @@ class Differ
                 }
             }
         }
-        throw new \Exception('Should not happen');
+        throw new Exception('Should not happen');
     }
 
     private function extractDiff(array $trace, int $x, int $y, array $a, array $b) {
         $result = [];
-        for ($d = \count($trace) - 1; $d >= 0; $d--) {
+        for ($d = count($trace) - 1; $d >= 0; $d--) {
             $v = $trace[$d];
             $k = $x - $y;
 
@@ -127,7 +130,7 @@ class Differ
      */
     private function coalesceReplacements(array $diff) {
         $newDiff = [];
-        $c = \count($diff);
+        $c = count($diff);
         for ($i = 0; $i < $c; $i++) {
             $diffType = $diff[$i]->type;
             if ($diffType !== DiffElem::TYPE_REMOVE) {

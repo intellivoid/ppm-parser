@@ -7,6 +7,7 @@ use PpmParser\Node\Identifier;
 use PpmParser\Node\Name;
 use PpmParser\Node\NullableType;
 use PpmParser\Node\UnionType;
+use function is_string;
 
 class Property extends Node\Stmt
 {
@@ -29,7 +30,7 @@ class Property extends Node\Stmt
         $this->attributes = $attributes;
         $this->flags = $flags;
         $this->props = $props;
-        $this->type = \is_string($type) ? new Identifier($type) : $type;
+        $this->type = is_string($type) ? new Identifier($type) : $type;
     }
 
     public function getSubNodeNames() : array {

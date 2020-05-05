@@ -5,6 +5,7 @@ namespace PpmParser\Node\Expr;
 use PpmParser\Node;
 use PpmParser\Node\Expr;
 use PpmParser\Node\FunctionLike;
+use function is_string;
 
 class Closure extends Expr implements FunctionLike
 {
@@ -40,7 +41,7 @@ class Closure extends Expr implements FunctionLike
         $this->params = $subNodes['params'] ?? [];
         $this->uses = $subNodes['uses'] ?? [];
         $returnType = $subNodes['returnType'] ?? null;
-        $this->returnType = \is_string($returnType) ? new Node\Identifier($returnType) : $returnType;
+        $this->returnType = is_string($returnType) ? new Node\Identifier($returnType) : $returnType;
         $this->stmts = $subNodes['stmts'] ?? [];
     }
 

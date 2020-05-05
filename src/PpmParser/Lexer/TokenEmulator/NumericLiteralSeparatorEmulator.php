@@ -3,6 +3,10 @@
 namespace PpmParser\Lexer\TokenEmulator;
 
 use PpmParser\Lexer\Emulative;
+use function count;
+use function is_array;
+use function strlen;
+use const PHP_VERSION;
 
 final class NumericLiteralSeparatorEmulator implements TokenEmulatorInterface
 {
@@ -17,7 +21,7 @@ final class NumericLiteralSeparatorEmulator implements TokenEmulatorInterface
     public function isEmulationNeeded(string $code) : bool
     {
         // skip version where this is supported
-        if (version_compare(\PHP_VERSION, Emulative::PHP_7_4, '>=')) {
+        if (version_compare(PHP_VERSION, Emulative::PHP_7_4, '>=')) {
             return false;
         }
 
@@ -32,7 +36,7 @@ final class NumericLiteralSeparatorEmulator implements TokenEmulatorInterface
         $codeOffset = 0;
         for ($i = 0, $c = count($tokens); $i < $c; ++$i) {
             $token = $tokens[$i];
-            $tokenLen = \strlen(\is_array($token) ? $token[1] : $token);
+            $tokenLen = strlen(is_array($token) ? $token[1] : $token);
 
             if ($token[0] !== T_LNUMBER && $token[0] !== T_DNUMBER) {
                 $codeOffset += $tokenLen;
@@ -43,7 +47,7 @@ final class NumericLiteralSeparatorEmulator implements TokenEmulatorInterface
             assert($res, "No number at number token position");
 
             $match = $matches[0];
-            $matchLen = \strlen($match);
+            $matchLen = strlen($match);
             if ($matchLen === $tokenLen) {
                 // Original token already holds the full number.
                 $codeOffset += $tokenLen;
@@ -57,8 +61,8 @@ final class NumericLiteralSeparatorEmulator implements TokenEmulatorInterface
             $len = $tokenLen;
             while ($matchLen > $len) {
                 $nextToken = $tokens[$i + $numTokens];
-                $nextTokenText = \is_array($nextToken) ? $nextToken[1] : $nextToken;
-                $nextTokenLen = \strlen($nextTokenText);
+                $nextTokenText = is_array($nextToken) ? $nextToken[1] : $nextToken;
+                $nextTokenLen = strlen($nextTokenText);
 
                 $numTokens++;
                 if ($matchLen < $len + $nextTokenLen) {
@@ -73,7 +77,7 @@ final class NumericLiteralSeparatorEmulator implements TokenEmulatorInterface
             }
 
             array_splice($tokens, $i, $numTokens, $newTokens);
-            $c -= $numTokens - \count($newTokens);
+            $c -= $numTokens - count($newTokens);
             $codeOffset += $matchLen;
         }
 
